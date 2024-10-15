@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Plan Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.diet-plan {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #e7f3fe;
+}
+</style>
+<body>
+    <div class="container">
+        <h1>Diet Plan Generator</h1>
+        <form id="diet-form">
+            <label for="age">Age:</label>
+            <input type="number" id="age" required>
+            
+            <label for="gender">Gender:</label>
+            <select id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" required>
+            
+            <label for="health1">Primary Health Problem:</label>
+            <select id="health1">
+                <option value="fever">Fever</option>
+                <option value="heart">Heart Problem</option>
+                <option value="hypertension">Hypertension</option>
+                <option value="obesity">Obesity</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="kidney">Kidney Problem</option>
+                <option value="flu">Flu</option>
+            </select>
+            
+            <label for="health2">Secondary Health Problem:</label>
+            <select id="health2">
+                <option value="none">None</option>
+                <option value="fever">Fever</option>
+                <option value="heart">Heart Problem</option>
+                <option value="hypertension">Hypertension</option>
+                <option value="obesity">Obesity</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="kidney">Kidney Problem</option>
+                <option value="flu">Flu</option>
+            </select>
+
+            <button type="submit">Generate Diet Plan</button>
+        </form>
+        <div id="diet-plan" class="diet-plan"></div>
+    </div>
+
+    <script>
+        document.getElementById('diet-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const age = parseInt(document.getElementById('age').value);
+    const gender = document.getElementById('gender').value;
+    const weight = parseInt(document.getElementById('weight').value);
+    const health1 = document.getElementById('health1').value;
+    const health2 = document.getElementById('health2').value;
+    
+    let dietPlan = generateDietPlan(health1, health2, age, weight);
+    document.getElementById('diet-plan').innerHTML = dietPlan;
+});
+
+function generateDietPlan(health1, health2, age, weight) {
+    let meals = { breakfast: "", lunch: "", dinner: "" };
+
+    // Combined health conditions
+    const healthConditions = new Set([health1, health2]);
+
+    // Meal suggestions based on health conditions
+    if (healthConditions.has("diabetes")) {
+        meals.breakfast = "Oatmeal with berries and a boiled egg.";
+        meals.lunch = "Grilled chicken salad with mixed greens.";
+        meals.dinner = "Baked fish with steamed broccoli.";
+    }
+    if (healthConditions.has("obesity")) {
+        meals.breakfast = "Smoothie with spinach, banana, and almond milk.";
+        meals.lunch = "Quinoa bowl with veggies and lean protein.";
+        meals.dinner = "Stir-fried tofu with vegetables.";
+    }
+    if (healthConditions.has("hypertension")) {
+        meals.breakfast = "Whole grain toast with avocado.";
+        meals.lunch = "Lentil soup with whole grain bread.";
+        meals.dinner = "Grilled salmon with asparagus.";
+    }
+    if (healthConditions.has("heart")) {
+        meals.breakfast = "Greek yogurt with honey and walnuts.";
+        meals.lunch = "Turkey and avocado wrap.";
+        meals.dinner = "Vegetable stir-fry with brown rice.";
+    }
+    if (healthConditions.has("kidney")) {
+        meals.breakfast = "Fruit salad without bananas.";
+        meals.lunch = "Rice with grilled chicken and vegetables.";
+        meals.dinner = "Pasta with a light tomato sauce.";
+    }
+    if (healthConditions.has("flu")) {
+        meals.breakfast = "Warm oatmeal with honey.";
+        meals.lunch = "Chicken soup with vegetables.";
+        meals.dinner = "Steamed vegetables with brown rice.";
+    }
+
+    // Age-based meal suggestions
+    if (age < 18) {
+        meals.breakfast = meals.breakfast || "Fruit smoothie with yogurt.";
+        meals.lunch = meals.lunch || "Whole grain wrap with chicken and veggies.";
+        meals.dinner = meals.dinner || "Spaghetti with tomato sauce and a side salad.";
+    }
+
+    // Weight-based adjustments
+    if (weight > 80) {
+        meals.lunch += " Consider smaller portions or lighter snacks.";
+        meals.dinner += " Limit carbohydrates in the evening.";
+    } else if (weight < 60) {
+        meals.breakfast += " Add a protein shake for extra calories.";
+    }
+
+    return `
+        <h2>Your Diet Plan:</h2>
+        <h3>Breakfast:</h3>
+        <p>${meals.breakfast}</p>
+        <h3>Lunch:</h3>
+        <p>${meals.lunch}</p>
+        <h3>Dinner:</h3>
+        <p>${meals.dinner}</p>
+    `;
+}
+    </script>
+</body>
+</html>
