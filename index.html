@@ -6,6 +6,57 @@
     <title>Diet Plan Generator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.diet-plan {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #e7f3fe;
+}
+</style>
 <body>
     <div class="container">
         <h1>Precise Diet Generator</h1>
@@ -58,6 +109,129 @@
         <div id="diet-plan" class="diet-plan"></div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.getElementById('diet-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const age = parseInt(document.getElementById('age').value);
+    const gender = document.getElementById('gender').value;
+    const weight = parseInt(document.getElementById('weight').value);
+    const health1 = document.getElementById('health1').value;
+    const health2 = document.getElementById('health2').value;
+    
+    let dietPlan = generateDietPlan(health1, health2, age, weight);
+    document.getElementById('diet-plan').innerHTML = dietPlan;
+});
+
+function generateDietPlan(health1, health2, age, weight) {
+    let meals = { breakfast: "", lunch: "", dinner: "" };
+    let quantities = { breakfast: "", lunch: "", dinner: "" };
+
+    // Combined health conditions
+    const healthConditions = new Set([health1, health2]);
+
+    // Meal suggestions and quantities based on health conditions
+    if (healthConditions.has("diabetes")) {
+        meals.breakfast = "Oatmeal with berries and a boiled egg.";
+        quantities.breakfast = "50g oatmeal, 100g berries, 1 boiled egg.";
+        meals.lunch = "Grilled chicken salad with mixed greens.";
+        quantities.lunch = "150g grilled chicken, 200g mixed greens.";
+        meals.dinner = "Baked fish with steamed broccoli.";
+        quantities.dinner = "150g baked fish, 200g broccoli.";
+    }
+    if (healthConditions.has("obesity")) {
+        meals.breakfast = "Smoothie with spinach, banana, and almond milk.";
+        quantities.breakfast = "150g spinach, 1 banana, 200ml almond milk.";
+        meals.lunch = "Quinoa bowl with veggies and lean protein.";
+        quantities.lunch = "150g quinoa, 100g mixed veggies, 100g lean protein.";
+        meals.dinner = "Stir-fried tofu with vegetables.";
+        quantities.dinner = "150g tofu, 200g mixed vegetables.";
+    }
+    if (healthConditions.has("hypertension") || healthConditions.has("high BP")) {
+        meals.breakfast = "Whole grain toast with avocado.";
+        quantities.breakfast = "2 slices whole grain bread, 1 avocado.";
+        meals.lunch = "Lentil soup with whole grain bread.";
+        quantities.lunch = "250g lentil soup, 1 slice whole grain bread.";
+        meals.dinner = "Grilled salmon with asparagus.";
+        quantities.dinner = "150g salmon, 200g asparagus.";
+    }
+    if (healthConditions.has("heart")) {
+        meals.breakfast = "Greek yogurt with honey and walnuts.";
+        quantities.breakfast = "200g Greek yogurt, 1 tbsp honey, 30g walnuts.";
+        meals.lunch = "Turkey and avocado wrap.";
+        quantities.lunch = "100g turkey, 1 avocado, 1 whole grain wrap.";
+        meals.dinner = "Vegetable stir-fry with brown rice.";
+        quantities.dinner = "200g mixed vegetables, 150g brown rice.";
+    }
+    if (healthConditions.has("kidney")) {
+        meals.breakfast = "Fruit salad without bananas.";
+        quantities.breakfast = "200g mixed fruits.";
+        meals.lunch = "Rice with grilled chicken and vegetables.";
+        quantities.lunch = "150g rice, 100g grilled chicken, 100g vegetables.";
+        meals.dinner = "Pasta with a light tomato sauce.";
+        quantities.dinner = "150g pasta, 100g tomato sauce.";
+    }
+    if (healthConditions.has("flu")) {
+        meals.breakfast = "Warm oatmeal with honey.";
+        quantities.breakfast = "50g oatmeal, 1 tbsp honey.";
+        meals.lunch = "Chicken soup with vegetables.";
+        quantities.lunch = "250g chicken soup.";
+        meals.dinner = "Steamed vegetables with brown rice.";
+        quantities.dinner = "200g vegetables, 150g brown rice.";
+    }
+    if (healthConditions.has("thyroid")) {
+        meals.breakfast = "Smoothie with banana and spinach.";
+        quantities.breakfast = "1 banana, 100g spinach, 200ml almond milk.";
+        meals.lunch = "Brown rice with grilled chicken and broccoli.";
+        quantities.lunch = "150g brown rice, 150g grilled chicken, 200g broccoli.";
+        meals.dinner = "Quinoa salad with chickpeas.";
+        quantities.dinner = "150g quinoa, 100g chickpeas, 100g mixed vegetables.";
+    }
+    if (healthConditions.has("low BP")) {
+        meals.breakfast = "Salted nuts and dried fruits.";
+        quantities.breakfast = "30g salted nuts, 30g dried fruits.";
+        meals.lunch = "Whole grain sandwich with avocado and cheese.";
+        quantities.lunch = "2 slices whole grain bread, 1 avocado, 50g cheese.";
+        meals.dinner = "Fish curry with brown rice.";
+        quantities.dinner = "150g fish, 150g curry, 100g brown rice.";
+    }
+    if (healthConditions.has("asthma")) {
+        meals.breakfast = "Smoothie with blueberries and chia seeds.";
+        quantities.breakfast = "100g blueberries, 2 tbsp chia seeds, 200ml almond milk.";
+        meals.lunch = "Chicken stir-fry with mixed vegetables.";
+        quantities.lunch = "150g chicken, 200g mixed vegetables.";
+        meals.dinner = "Grilled shrimp with quinoa.";
+        quantities.dinner = "150g shrimp, 150g quinoa, 100g steamed vegetables.";
+    }
+
+    // Age-based meal suggestions
+    if (age < 18) {
+        meals.breakfast = meals.breakfast || "Fruit smoothie with yogurt.";
+        quantities.breakfast = quantities.breakfast || "200ml yogurt, 1 banana.";
+        meals.lunch = meals.lunch || "Whole grain wrap with chicken and veggies.";
+        quantities.lunch = quantities.lunch || "1 whole grain wrap, 100g chicken, 100g veggies.";
+        meals.dinner = meals.dinner || "Spaghetti with tomato sauce and a side salad.";
+        quantities.dinner = quantities.dinner || "150g spaghetti, 100g tomato sauce, 200g salad.";
+    }
+
+    // Weight-based adjustments
+    if (weight > 80) {
+        meals.lunch += " Consider smaller portions or lighter snacks.";
+        meals.dinner += " Limit carbohydrates in the evening.";
+    } else if (weight < 60) {
+        meals.breakfast += " Add a protein shake for extra calories.";
+    }
+
+    return `
+        <h2>Your Diet Plan:</h2>
+        <h3>Breakfast:</h3>
+        <p>${meals.breakfast} (${quantities.breakfast})</p>
+        <h3>Lunch:</h3>
+        <p>${meals.lunch} (${quantities.lunch})</p>
+        <h3>Dinner:</h3>
+        <p>${meals.dinner} (${quantities.dinner})</p>
+    `;
+}
+    </script>
 </body>
 </html>
